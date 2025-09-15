@@ -105,6 +105,7 @@ A Coleção Jeane é o convite perfeito para quem ama a liberdade da praia, mas 
 
 
 const Products: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [selectedProduct, setSelectedProduct] = useState<ProductCategory | null>(null);
   const [copyNotification, setCopyNotification] = useState<string | null>(null);
@@ -119,6 +120,10 @@ const Products: React.FC = () => {
       cancelAnimationFrame(animationFrameRef.current);
       animationFrameRef.current = null;
     }
+     if (interactionTimerRef.current) {
+      clearTimeout(interactionTimerRef.current);
+      interactionTimerRef.current = null;
+    }
   };
 
   const startAutoScroll = () => {
@@ -131,12 +136,12 @@ const Products: React.FC = () => {
         const container = scrollContainerRef.current;
         const halfWidth = container.scrollWidth / 2;
         
+        container.scrollLeft += 0.5; // Adjust this value for scroll speed
+
         // When the scroll position reaches the start of the duplicated content,
-        // silently jump back to the beginning to create a loop.
+        // silently jump back to the equivalent position to create a loop.
         if (container.scrollLeft >= halfWidth) {
             container.scrollLeft -= halfWidth;
-        } else {
-            container.scrollLeft += 0.5; // Adjust this value for scroll speed
         }
     }
     animationFrameRef.current = requestAnimationFrame(autoScrollStep);
@@ -144,9 +149,6 @@ const Products: React.FC = () => {
   
   const handleInteraction = () => {
     stopAutoScroll();
-    if (interactionTimerRef.current) {
-      clearTimeout(interactionTimerRef.current);
-    }
     // Resume auto-scrolling after 5 seconds of inactivity
     interactionTimerRef.current = window.setTimeout(startAutoScroll, 5000);
   };
@@ -154,25 +156,39 @@ const Products: React.FC = () => {
   useEffect(() => {
     const container = scrollContainerRef.current;
     
-    if (!selectedProduct) {
-        startAutoScroll();
-    } else {
-        stopAutoScroll();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Start scrolling only if the element is in view and no modal is open
+        if (entry.isIntersecting && !selectedProduct) {
+          startAutoScroll();
+        } else {
+          stopAutoScroll();
+        }
+      },
+      { threshold: 0.1 } // Trigger when 10% of the component is visible
+    );
+
+    const currentSection = sectionRef.current;
+    if (currentSection) {
+      observer.observe(currentSection);
     }
     
-    // Listen for user scroll events to pause auto-scroll
+    // Add interaction listeners to pause auto-scroll
     container?.addEventListener('wheel', handleInteraction, { passive: true });
     container?.addEventListener('touchstart', handleInteraction, { passive: true });
+    container?.addEventListener('mousedown', handleInteraction, { passive: true });
 
     return () => {
       stopAutoScroll();
-      if (interactionTimerRef.current) {
-        clearTimeout(interactionTimerRef.current);
+      if (currentSection) {
+        observer.unobserve(currentSection);
       }
+      // Cleanup interaction listeners
       container?.removeEventListener('wheel', handleInteraction);
       container?.removeEventListener('touchstart', handleInteraction);
+      container?.removeEventListener('mousedown', handleInteraction);
     };
-  }, [selectedProduct]);
+  }, [selectedProduct]); // Rerun effect if modal state changes
 
   const scrollByPage = (direction: 'left' | 'right') => {
     handleInteraction(); // Treat button clicks as an interaction
@@ -204,7 +220,8 @@ const Products: React.FC = () => {
         await navigator.clipboard.writeText(window.location.href);
         setCopyNotification('Link copiado para a área de transferência!');
         setTimeout(() => setCopyNotification(null), 3000);
-      } catch (err) {
+      } catch (err)
+{
         console.error('Failed to copy:', err);
         setCopyNotification('Erro ao copiar o link.');
         setTimeout(() => setCopyNotification(null), 3000);
@@ -214,7 +231,7 @@ const Products: React.FC = () => {
 
 
   return (
-    <section className="py-20 bg-[#FDFDFD]">
+    <section ref={sectionRef} className="py-20 bg-[#FDFDFD]">
       <div className="container mx-auto">
         <div className="text-center mb-12 px-6">
           <h2 className="font-satisfy text-5xl text-[#A6783F]">Nossas Coleções</h2>
