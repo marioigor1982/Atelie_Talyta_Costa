@@ -1,9 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+const aboutImages = [
+  'https://i.postimg.cc/8PskX1VP/sem-fundo-1.png', // Original image
+  'https://i.postimg.cc/HW6strRh/sem-fundo-2.png',
+  'https://i.postimg.cc/qqvBTrhw/sem-fundo-3.png',
+  'https://i.postimg.cc/7ZG348Sq/MKT-4.jpg',
+];
+
 const About: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // Slideshow effect
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % aboutImages.length);
+    }, 15000); // Change image every 15 seconds
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // Intersection observer for fade-in animation
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -40,17 +58,24 @@ const About: React.FC = () => {
           <p className="font-bebas text-2xl text-gray-500 tracking-wider mt-2">Feito com Alma e Natureza</p>
         </div>
         <div className="flex flex-col md:flex-row items-center gap-12">
-          {/* Image container with animation */}
+          {/* Image container with slideshow */}
           <div
             className={`md:w-1/2 flex justify-center transition-all duration-1000 ease-out transform ${
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
             }`}
           >
-            <img 
-              src="https://i.postimg.cc/8PskX1VP/sem-fundo-1.png" 
-              alt="Colar com flor natural desidratada" 
-              className="rounded-lg shadow-2xl max-w-lg w-full"
-            />
+            <div className="relative w-full max-w-lg aspect-[4/5] rounded-lg shadow-2xl overflow-hidden">
+              {aboutImages.map((src, index) => (
+                <img
+                  key={src}
+                  src={src}
+                  alt={`Foto sobre o Ateliê Talyta Costa ${index + 1}`}
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+                    index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
           {/* Text container with animation */}
           <div
