@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const LOGO_URL = 'https://i.postimg.cc/k4cMzG4D/Chat-GPT-Image-31-de-ago-de-2025-23-03-36.png';
+export const LOGO_URL = 'https://i.postimg.cc/PrW680Gk/Logo-Oficial-Talyta-Costa.jpg';
 
 export const WHATSAPP_LINK = 'https://api.whatsapp.com/send?phone=5511993590875';
 export const INSTAGRAM_LINK = 'https://www.instagram.com/atelie_talyta';
