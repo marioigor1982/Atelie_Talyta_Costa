@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import type { ProductCategory } from '../types';
 import ProductModal from './ProductModal';
-import { ShareIcon } from '../constants';
+import { HeartIcon } from '../constants';
 
 const categories: ProductCategory[] = [
   {
@@ -108,12 +108,25 @@ const Products: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [selectedProduct, setSelectedProduct] = useState<ProductCategory | null>(null);
-  const [copyNotification, setCopyNotification] = useState<string | null>(null);
+  const [likedProducts, setLikedProducts] = useState<Set<string>>(new Set());
   const animationFrameRef = useRef<number | null>(null);
   const interactionTimerRef = useRef<number | null>(null);
 
   // Duplicate categories for infinite loop effect
   const displayCategories = [...categories, ...categories];
+
+  const handleLikeToggle = (productTitle: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLikedProducts(prevLiked => {
+      const newLiked = new Set(prevLiked);
+      if (newLiked.has(productTitle)) {
+        newLiked.delete(productTitle);
+      } else {
+        newLiked.add(productTitle);
+      }
+      return newLiked;
+    });
+  };
 
   const stopAutoScroll = () => {
     if (animationFrameRef.current) {
@@ -201,33 +214,6 @@ const Products: React.FC = () => {
       });
     }
   };
-  
-  const handleShare = async (category: ProductCategory) => {
-    const shareData = {
-      title: `Ateliê Talyta Costa - ${category.title}`,
-      text: `Confira a coleção "${category.title}" no Ateliê Talyta Costa! Semi-jóias únicas com flores naturais.`,
-      url: window.location.href,
-    };
-
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch (err) {
-        console.error('Share failed:', err);
-      }
-    } else {
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        setCopyNotification('Link copiado para a área de transferência!');
-        setTimeout(() => setCopyNotification(null), 3000);
-      } catch (err)
-{
-        console.error('Failed to copy:', err);
-        setCopyNotification('Erro ao copiar o link.');
-        setTimeout(() => setCopyNotification(null), 3000);
-      }
-    }
-  };
 
 
   return (
@@ -251,17 +237,16 @@ const Products: React.FC = () => {
             {displayCategories.map((category, index) => (
               <div key={index} className="relative aspect-[3/4] w-64 md:w-72 flex-shrink-0 group rounded-xl overflow-hidden shadow-lg transform transition-transform,box-shadow duration-300 md:hover:shadow-2xl md:hover:scale-105">
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleInteraction();
-                    handleShare(category);
-                  }}
-                  className="absolute top-3 right-3 z-30 w-10 h-10 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/60 transition-all duration-300"
-                  aria-label={`Compartilhar ${category.title}`}
+                  onClick={(e) => handleLikeToggle(category.title, e)}
+                  className="absolute top-4 right-4 z-30 p-2 rounded-full bg-black/30 backdrop-blur-sm group/heart transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
+                  aria-label={`Curtir ${category.title}`}
+                  aria-pressed={likedProducts.has(category.title)}
                 >
-                  <ShareIcon className="w-5 h-5" />
+                  <HeartIcon
+                    className={`w-6 h-6 transition-colors ${likedProducts.has(category.title) ? 'text-red-500' : 'text-white group-hover/heart:text-red-400'}`}
+                    isLiked={likedProducts.has(category.title)}
+                  />
                 </button>
-                
                 <video
                   src={category.video}
                   autoPlay
@@ -320,20 +305,6 @@ const Products: React.FC = () => {
       {selectedProduct && (
         <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
       )}
-      {copyNotification && (
-        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-[200] animate-fade-in-out">
-          {copyNotification}
-        </div>
-      )}
-      <style>{`
-        @keyframes fade-in-out {
-          0%, 100% { opacity: 0; transform: translate(-50%, 10px); }
-          10%, 90% { opacity: 1; transform: translate(-50%, 0); }
-        }
-        .animate-fade-in-out {
-          animation: fade-in-out 3s ease-in-out forwards;
-        }
-      `}</style>
     </section>
   );
 };
