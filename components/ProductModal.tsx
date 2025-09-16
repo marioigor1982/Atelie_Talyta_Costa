@@ -70,12 +70,13 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
               <h2 id="product-title" className="font-satisfy text-4xl md:text-5xl text-[#A6783F]">{product.title}</h2>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-800 transition-colors"
+                className="text-gray-400 hover:text-gray-800 transition-colors flex flex-col items-center"
                 aria-label="Fechar modal"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
+                <span className="text-xs font-bebas tracking-wider mt-1">FECHAR</span>
               </button>
             </div>
             

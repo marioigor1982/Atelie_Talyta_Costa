@@ -7,7 +7,7 @@ interface ImageGalleryProps {
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [zoomedImage, setZoomedImage] = useState<string | null>(null);
+  const [zoomedImageIndex, setZoomedImageIndex] = useState<number | null>(null);
 
   useEffect(() => {
     setCurrentIndex(0);
@@ -29,9 +29,39 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
     setCurrentIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
+  const handleZoomPrev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setZoomedImageIndex(prevIndex => {
+      if (prevIndex === null) return 0;
+      return prevIndex === 0 ? images.length - 1 : prevIndex - 1;
+    });
+  };
+
+  const handleZoomNext = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setZoomedImageIndex(prevIndex => {
+      if (prevIndex === null) return 0;
+      return prevIndex === images.length - 1 ? 0 : prevIndex + 1;
+    });
+  };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (zoomedImage) return; // Don't interfere when image is zoomed
+      if (zoomedImageIndex !== null) {
+        if (e.key === 'ArrowLeft') {
+          setZoomedImageIndex(prevIndex => {
+            if (prevIndex === null) return 0;
+            return prevIndex === 0 ? images.length - 1 : prevIndex - 1;
+          });
+        } else if (e.key === 'ArrowRight') {
+          setZoomedImageIndex(prevIndex => {
+            if (prevIndex === null) return 0;
+            return prevIndex === images.length - 1 ? 0 : prevIndex + 1;
+          });
+        }
+        return;
+      }
+      
       if (e.key === 'ArrowLeft') {
         setCurrentIndex(prev => (prev === 0 ? images.length - 1 : prev - 1));
       } else if (e.key === 'ArrowRight') {
@@ -40,14 +70,14 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [images.length, zoomedImage]);
+  }, [images.length, zoomedImageIndex]);
 
-  const handleOpenZoom = (image: string) => {
-    setZoomedImage(image);
+  const handleOpenZoom = (index: number) => {
+    setZoomedImageIndex(index);
   };
 
   const handleCloseZoom = () => {
-    setZoomedImage(null);
+    setZoomedImageIndex(null);
   };
 
   return (
@@ -57,7 +87,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
         {images.map((image, index) => (
           <button
             key={index}
-            onClick={() => handleOpenZoom(image)}
+            onClick={() => handleOpenZoom(index)}
             className="aspect-square rounded-md overflow-hidden border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#A6783F]"
             aria-label={`Ver imagem ${index + 1} em tamanho grande`}
           >
@@ -74,7 +104,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
             src={mainImage} 
             alt={`Imagem principal de ${productTitle}`} 
             className="w-full h-full object-cover rounded-lg shadow-lg cursor-zoom-in" 
-            onClick={() => handleOpenZoom(mainImage)}
+            onClick={() => handleOpenZoom(currentIndex)}
           />
           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-lg pointer-events-none">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -119,20 +149,48 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
       </div>
 
       {/* Zoomed Image Modal */}
-      {zoomedImage && (
+      {zoomedImageIndex !== null && (
         <div 
-          className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 cursor-zoom-out animate-fade-in"
+          className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
           onClick={handleCloseZoom}
           role="dialog"
           aria-label="Imagem ampliada"
         >
+          {images.length > 1 && (
+            <>
+              {/* Previous Button */}
+              <button
+                onClick={handleZoomPrev}
+                aria-label="Imagem anterior"
+                className="absolute top-1/2 -translate-y-1/2 left-2 sm:left-4 z-[1000] w-10 h-10 sm:w-12 sm:h-12 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/50 transition-all"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
+              </button>
+              {/* Next Button */}
+              <button
+                onClick={handleZoomNext}
+                aria-label="Próxima imagem"
+                className="absolute top-1/2 -translate-y-1/2 right-2 sm:right-4 z-[1000] w-10 h-10 sm:w-12 sm:h-12 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/50 transition-all"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
+              </button>
+            </>
+          )}
+          
           <img 
-            src={zoomedImage} 
+            src={images[zoomedImageIndex]} 
             alt={`Imagem ampliada de ${productTitle}`} 
-            className="max-w-full max-h-full object-contain shadow-2xl rounded-lg"
+            className="max-w-[90vw] max-h-[90vh] object-contain shadow-2xl rounded-lg cursor-default"
             onClick={(e) => e.stopPropagation()}
           />
-          <button onClick={handleCloseZoom} className="absolute top-4 right-4 text-white text-5xl hover:text-gray-300 transition-colors" aria-label="Fechar zoom">&times;</button>
+          <button 
+            onClick={handleCloseZoom} 
+            className="absolute top-4 right-4 z-[1000] text-white hover:text-gray-300 transition-colors flex flex-col items-center" 
+            aria-label="Fechar zoom"
+          >
+            <span className="text-5xl leading-none">&times;</span>
+            <span className="text-xs font-bebas tracking-widest mt-1">FECHAR</span>
+          </button>
         </div>
       )}
       <style>{`
