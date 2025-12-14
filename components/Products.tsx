@@ -94,6 +94,17 @@ const categories: ProductCategory[] = [
     whatsappIdentifier: 'Biojoia Colares',
   },
   {
+    title: 'Conjunto P',
+    video: 'https://ik.imagekit.io/marioigor82/BASE%20A%C3%87O%20INIXID%C3%81VEL%20CORRENTE%20BANHADA%20OURO%201.mp4',
+    description: ['Conjunto P (Verde azulado)', 'R$ 85,00'],
+    galleryImages: [
+      'https://i.postimg.cc/L8Sdppf2/BASE-ACO-INIXIDAVEL-CORRENTE-BANHADA-OURO-2.jpg',
+      'https://ik.imagekit.io/marioigor82/BASE%20A%C3%87O%20INIXID%C3%81VEL%20CORRENTE%20BANHADA%20OURO%201.mp4'
+    ],
+    technicalDetails: 'Conjunto P (Verde azulado)\n\nDescrição técnica: Corrente veneziana banhada ouro 18k, 5 milésimos.\n\nPreço: R$ 85,00',
+    whatsappIdentifier: 'Conjunto P',
+  },
+  {
     title: 'Brinco Médio',
     video: 'https://ik.imagekit.io/marioigor82/Brincos.mp4?updatedAt=1757878780805',
     description: ['Brinco médio base banhada a ouro 18K 5 milésimos', 'A partir de R$ 50,00'],
