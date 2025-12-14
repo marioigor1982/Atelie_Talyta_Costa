@@ -119,7 +119,14 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
                 </div>
               ) : isVideo(image) ? (
                 <div className="w-full h-full relative">
-                  <video src={image} className="w-full h-full object-cover" muted playsInline />
+                  <video 
+                    src={image} 
+                    className="w-full h-full object-cover" 
+                    muted={true} 
+                    defaultMuted={true}
+                    ref={(el) => { if (el) el.muted = true; }} 
+                    playsInline 
+                  />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/20">
                     <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                   </div>
@@ -138,8 +145,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
         <div className="relative flex-grow group" aria-label="Galeria de imagens, use as setas para navegar">
           {getYouTubeId(mainImage) ? (
              <iframe
-               src={`https://www.youtube.com/embed/${getYouTubeId(mainImage)}?autoplay=0&rel=0&mute=1`}
-               className="w-full h-full bg-black rounded-lg shadow-lg"
+               src={`https://www.youtube.com/embed/${getYouTubeId(mainImage)}?autoplay=0&rel=0&mute=1&controls=0`}
+               className="w-full h-full bg-black rounded-lg shadow-lg pointer-events-none"
                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                allowFullScreen
                title="YouTube video player"
@@ -150,9 +157,10 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
               className="w-full h-full object-contain bg-black rounded-lg shadow-lg cursor-zoom-in"
               autoPlay
               loop
-              muted
+              muted={true}
+              defaultMuted={true}
+              ref={(el) => { if (el) el.muted = true; }}
               playsInline
-              controls
               onClick={() => handleOpenZoom(currentIndex)}
             >
               Seu navegador não suporta vídeos.
@@ -219,7 +227,14 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
                    </div>
                 ) : isVideo(image) ? (
                   <div className="w-full h-full relative">
-                    <video src={image} className="w-full h-full object-cover" muted playsInline />
+                    <video 
+                      src={image} 
+                      className="w-full h-full object-cover" 
+                      muted={true} 
+                      defaultMuted={true}
+                      ref={(el) => { if (el) el.muted = true; }} 
+                      playsInline 
+                    />
                      <div className="absolute inset-0 flex items-center justify-center bg-black/20">
                       <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     </div>
@@ -264,7 +279,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
           
           {getYouTubeId(images[zoomedImageIndex]) ? (
              <iframe 
-               src={`https://www.youtube.com/embed/${getYouTubeId(images[zoomedImageIndex])}?autoplay=1&mute=1`} 
+               src={`https://www.youtube.com/embed/${getYouTubeId(images[zoomedImageIndex])}?autoplay=1&mute=1&controls=0`} 
                className="w-full max-w-4xl h-[80vh] shadow-2xl rounded-lg"
                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                allowFullScreen
@@ -274,9 +289,11 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
              <video 
                src={images[zoomedImageIndex]} 
                className="max-w-[90vw] max-h-[90vh] object-contain shadow-2xl rounded-lg"
-               controls
                autoPlay
-               muted
+               loop
+               muted={true}
+               defaultMuted={true}
+               ref={(el) => { if (el) el.muted = true; }}
                onClick={(e) => e.stopPropagation()}
              />
           ) : (

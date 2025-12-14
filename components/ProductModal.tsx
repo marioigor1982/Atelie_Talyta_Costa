@@ -46,12 +46,13 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
             <div className="w-full h-full bg-black flex items-center justify-center">
               <video
                 src={product.modalVideo}
-                controls
                 autoPlay
                 loop
-                muted
+                muted={true}
+                defaultMuted={true}
+                ref={(el) => { if (el) el.muted = true; }}
                 playsInline
-                className="w-full h-full object-contain max-h-[45vh] sm:max-h-full"
+                className="w-full h-full object-contain max-h-[45vh] sm:max-h-full pointer-events-none"
                 aria-label={`Vídeo da ${product.title}`}
               >
                 Seu navegador não suporta vídeos.

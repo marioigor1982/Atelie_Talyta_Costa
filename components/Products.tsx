@@ -97,7 +97,7 @@ const categories: ProductCategory[] = [
     title: 'Conjunto P',
     description: ['Conjunto P (Verde azulado)', 'R$ 85,00'],
     galleryImages: [
-      'https://i.postimg.cc/L8Sdppf2/BASE-ACO-INIXIDAVEL-CORRENTE-BANHADA-OURO-2.jpg'
+      'https://i.postimg.cc/L8Sdppf2/BASE_ACO_INIXIDAVEL_CORRENTE_BANHADA_OURO_2.jpg'
     ],
     technicalDetails: 'Conjunto P (Verde azulado)\n\nDescrição técnica: Corrente veneziana banhada ouro 18k, 5 milésimos.\n\nPreço: R$ 85,00',
     whatsappIdentifier: 'Conjunto P',
@@ -352,7 +352,9 @@ const Products: React.FC = () => {
                       src={category.video}
                       autoPlay
                       loop
-                      muted
+                      muted={true}
+                      defaultMuted={true}
+                      ref={(el) => { if (el) el.muted = true; }}
                       playsInline
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 md:group-hover:scale-110"
                     >
