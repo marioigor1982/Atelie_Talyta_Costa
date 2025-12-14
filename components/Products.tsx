@@ -39,6 +39,19 @@ const categories: ProductCategory[] = [
     whatsappIdentifier: 'Conjunto Gota Negra',
   },
   {
+    title: 'Biojoia',
+    video: 'https://ik.imagekit.io/marioigor82/BIJOIA%20CONJUNTO%20PP%20FLOR%20NATURAL%20HOTENSIA%20CORRENTE%20BANHADA%20OURO%201.mp4',
+    description: ['Conjunto PP Flor Natural', 'R$ 120,00'],
+    galleryImages: [
+      'https://i.postimg.cc/KvBnXrGs/BIJOIA-CONJUNTO-PP-FLOR-NATURAL-HOTENSIA-CORRENTE-BANHADA-OURO-2.jpg',
+      'https://ik.imagekit.io/marioigor82/BIJOIA%20CONJUNTO%20PP%20FLOR%20NATURAL%20HOTENSIA%20CORRENTE%20BANHADA%20OURO%201.mp4',
+      'https://ik.imagekit.io/marioigor82/BIJOIA%20CONJUNTO%20PP%20FLOR%20NATURAL%20HOTENSIA%20CORRENTE%20BANHADA%20OURO%203.mp4',
+      'https://ik.imagekit.io/marioigor82/BIJOIA%20CONJUNTO%20PP%20FLOR%20NATURAL%20HOTENSIA%20CORRENTE%20BANHADA%20OURO%205.mp4'
+    ],
+    technicalDetails: 'Conjunto PP Flor natural Sempre Viva desidratada\n\nDescrição Técnica: Base e corrente veneziana banhada ouro 18k, 5 milésimos.\n\nPreço: R$ 120,00',
+    whatsappIdentifier: 'Biojoia',
+  },
+  {
     title: 'Brinco Médio',
     video: 'https://ik.imagekit.io/marioigor82/Brincos.mp4?updatedAt=1757878780805',
     description: ['Brinco médio base banhada a ouro 18K 5 milésimos', 'A partir de R$ 50,00'],
