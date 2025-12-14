@@ -52,6 +52,17 @@ const categories: ProductCategory[] = [
     whatsappIdentifier: 'Biojoia',
   },
   {
+    title: 'Biojoia Orquídea',
+    video: 'https://ik.imagekit.io/marioigor82/BIJOIA%20CONJUNTO%20ORQU%C3%8DDEA%20NATURAL%20DESIDRATADA%20CORRENTE%20BANHADA%20OURO%201.mp4',
+    description: ['Conjunto Orquídeas natural', 'R$ 150,00'],
+    galleryImages: [
+      'https://i.postimg.cc/qqkg9n1K/BIJOIA-CONJUNTO-ORQUIDEA-NATURAL-DESIDRATADA-CORRENTE-BANHADA-OURO-2.jpg',
+      'https://ik.imagekit.io/marioigor82/BIJOIA%20CONJUNTO%20ORQU%C3%8DDEA%20NATURAL%20DESIDRATADA%20CORRENTE%20BANHADA%20OURO%201.mp4'
+    ],
+    technicalDetails: 'Conjunto Orquídeas natural desidratada\n\nDescrição Técnica: Base e corrente veneziana banhada ouro 18k, 5 milésimos.\n\nPreço: R$ 150,00',
+    whatsappIdentifier: 'Biojoia Orquídea',
+  },
+  {
     title: 'Brinco Médio',
     video: 'https://ik.imagekit.io/marioigor82/Brincos.mp4?updatedAt=1757878780805',
     description: ['Brinco médio base banhada a ouro 18K 5 milésimos', 'A partir de R$ 50,00'],
