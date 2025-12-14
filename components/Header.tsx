@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ refs, onScrollTo }) => {
               <li key={item.label}>
                 <button
                   onClick={() => onScrollTo(item.ref)}
-                  className="font-bebas uppercase tracking-wider text-xl px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#F2E8B3] hover:text-[#8C5626]"
+                  className="font-satisfy text-2xl px-4 py-2 rounded-full transition-all duration-300 hover:bg-[#F2E8B3] hover:text-[#8C5626]"
                 >
                   {item.label}
                 </button>
@@ -74,7 +74,7 @@ const Header: React.FC<HeaderProps> = ({ refs, onScrollTo }) => {
               <li key={item.label} className="w-full">
                 <button
                   onClick={() => handleMobileLinkClick(item.ref)}
-                  className="w-full text-center font-bebas uppercase tracking-wider text-xl py-3 transition-all duration-300 hover:bg-[#F2E8B3] hover:text-[#8C5626]"
+                  className="w-full text-center font-satisfy text-2xl py-3 transition-all duration-300 hover:bg-[#F2E8B3] hover:text-[#8C5626]"
                 >
                   {item.label}
                 </button>
