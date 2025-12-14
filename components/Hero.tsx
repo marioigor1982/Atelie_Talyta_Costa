@@ -9,7 +9,10 @@ const SUBTITLES = [
   "Semi-jóias únicas, feitas à mão com amor e flores naturais.",
   "Colares com flor natural desidratada.",
   "Lindos conjuntos que realçam seu estilo.",
-  "Qualidade e carinho, você encontra aqui!"
+  "Qualidade e carinho, você encontra aqui!",
+  "Delicadeza em cada detalhe",
+  "Peças que valorizam quem você é!",
+  "Elegância natural para todos os momentos"
 ];
 
 const Hero: React.FC<HeroProps> = ({ onScrollToProducts }) => {
