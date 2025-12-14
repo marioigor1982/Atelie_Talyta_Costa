@@ -138,7 +138,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
         <div className="relative flex-grow group" aria-label="Galeria de imagens, use as setas para navegar">
           {getYouTubeId(mainImage) ? (
              <iframe
-               src={`https://www.youtube.com/embed/${getYouTubeId(mainImage)}?autoplay=0&rel=0`}
+               src={`https://www.youtube.com/embed/${getYouTubeId(mainImage)}?autoplay=0&rel=0&mute=1`}
                className="w-full h-full bg-black rounded-lg shadow-lg"
                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                allowFullScreen
@@ -264,7 +264,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
           
           {getYouTubeId(images[zoomedImageIndex]) ? (
              <iframe 
-               src={`https://www.youtube.com/embed/${getYouTubeId(images[zoomedImageIndex])}?autoplay=1`} 
+               src={`https://www.youtube.com/embed/${getYouTubeId(images[zoomedImageIndex])}?autoplay=1&mute=1`} 
                className="w-full max-w-4xl h-[80vh] shadow-2xl rounded-lg"
                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                allowFullScreen
@@ -276,6 +276,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
                className="max-w-[90vw] max-h-[90vh] object-contain shadow-2xl rounded-lg"
                controls
                autoPlay
+               muted
                onClick={(e) => e.stopPropagation()}
              />
           ) : (
