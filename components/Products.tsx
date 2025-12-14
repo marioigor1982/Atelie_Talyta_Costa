@@ -95,11 +95,10 @@ const categories: ProductCategory[] = [
   },
   {
     title: 'Conjunto P',
-    video: 'https://drive.google.com/uc?export=download&id=1ppVNFZtFBJ-gq_wCEj2yYKBgzith4gVS#.mp4',
     description: ['Conjunto P (Verde azulado)', 'R$ 85,00'],
     galleryImages: [
       'https://i.postimg.cc/L8Sdppf2/BASE-ACO-INIXIDAVEL-CORRENTE-BANHADA-OURO-2.jpg',
-      'https://drive.google.com/uc?export=download&id=1ppVNFZtFBJ-gq_wCEj2yYKBgzith4gVS#.mp4'
+      'https://www.youtube.com/shorts/8-jMGnZOe2U'
     ],
     technicalDetails: 'Conjunto P (Verde azulado)\n\nDescrição técnica: Corrente veneziana banhada ouro 18k, 5 milésimos.\n\nPreço: R$ 85,00',
     whatsappIdentifier: 'Conjunto P',
@@ -182,6 +181,15 @@ A Coleção Jeane é o convite perfeito para quem ama a liberdade da praia, mas 
   }
 ];
 
+const getYouTubeId = (url: string) => {
+  if (!url) return null;
+  const shortsMatch = url.match(/\/shorts\/([a-zA-Z0-9_-]+)/);
+  if (shortsMatch) return shortsMatch[1];
+  
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+};
 
 const Products: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -313,7 +321,10 @@ const Products: React.FC = () => {
             className="flex space-x-6 overflow-x-auto p-4"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
-            {displayCategories.map((category, index) => (
+            {displayCategories.map((category, index) => {
+              const youtubeId = category.video ? getYouTubeId(category.video) : null;
+              
+              return (
               <div key={index} className="relative aspect-[3/4] w-64 md:w-72 flex-shrink-0 group rounded-xl overflow-hidden shadow-lg transform transition-transform,box-shadow duration-300 md:hover:shadow-2xl md:hover:scale-105">
                 <button
                   onClick={(e) => handleLikeToggle(category.title, e)}
@@ -327,16 +338,28 @@ const Products: React.FC = () => {
                   />
                 </button>
                 {category.video ? (
-                  <video
-                    src={category.video}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 md:group-hover:scale-110"
-                  >
-                    Seu navegador não suporta vídeos.
-                  </video>
+                  youtubeId ? (
+                    <div className="absolute inset-0 w-full h-full bg-black pointer-events-none">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${youtubeId}&playsinline=1`}
+                        className="w-full h-full object-cover scale-[1.35]" // Scale up to hide potential black bars/controls
+                        title={category.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        frameBorder="0"
+                      />
+                    </div>
+                  ) : (
+                    <video
+                      src={category.video}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 md:group-hover:scale-110"
+                    >
+                      Seu navegador não suporta vídeos.
+                    </video>
+                  )
                 ) : (
                   <img
                     src={category.galleryImages[0]}
@@ -345,9 +368,9 @@ const Products: React.FC = () => {
                   />
                 )}
                 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10 z-10"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10 z-10 pointer-events-none"></div>
                 
-                <div className="absolute inset-0 p-6 flex flex-col justify-end text-white z-20">
+                <div className="absolute inset-0 p-6 flex flex-col justify-end text-white z-20 pointer-events-none">
                   <div>
                     <h3 className="font-satisfy text-4xl drop-shadow-md">{category.title}</h3>
                     <div className="font-satisfy text-xl mt-2 opacity-90 drop-shadow-sm">
@@ -359,7 +382,7 @@ const Products: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity,transform duration-300 transform group-hover:translate-y-0 translate-y-4">
+                  <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity,transform duration-300 transform group-hover:translate-y-0 translate-y-4 pointer-events-auto">
                     <button
                       onClick={() => setSelectedProduct(category)}
                       className="px-6 py-2 bg-white/90 text-[#8C5626] font-bebas text-lg tracking-wider uppercase rounded-full shadow-lg backdrop-blur-sm hover:bg-white"
@@ -370,7 +393,7 @@ const Products: React.FC = () => {
                   </div>
                 </div>
               </div>
-            ))}
+            )})}
           </div>
           
           <button

@@ -15,6 +15,17 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
 
   const mainImage = images[currentIndex];
 
+  const getYouTubeId = (url: string) => {
+    if (!url) return null;
+    const shortsMatch = url.match(/\/shorts\/([a-zA-Z0-9_-]+)/);
+    if (shortsMatch) return shortsMatch[1];
+    
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+
+  const isYouTube = (url: string) => !!getYouTubeId(url);
   const isVideo = (url: string) => /\.(mp4|webm|ogg)$/i.test(url) || url.includes('.mp4');
 
   if (!images || images.length === 0) {
@@ -86,32 +97,54 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
     <div className="w-full h-full">
       {/* Mobile View: Grid of thumbnails */}
       <div className="grid grid-cols-4 sm:hidden gap-1">
-        {images.map((image, index) => (
-          <button
-            key={index}
-            onClick={() => handleOpenZoom(index)}
-            className="aspect-square rounded-md overflow-hidden border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#A6783F] relative"
-            aria-label={`Ver item ${index + 1} em tamanho grande`}
-          >
-            {isVideo(image) ? (
-              <video src={image} className="w-full h-full object-cover" muted playsInline />
-            ) : (
-              <img src={image} alt={`Miniatura ${index + 1} de ${productTitle}`} className="w-full h-full object-cover" />
-            )}
-            {isVideo(image) && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-              </div>
-            )}
-          </button>
-        ))}
+        {images.map((image, index) => {
+          const youtubeId = getYouTubeId(image);
+          return (
+            <button
+              key={index}
+              onClick={() => handleOpenZoom(index)}
+              className="aspect-square rounded-md overflow-hidden border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#A6783F] relative"
+              aria-label={`Ver item ${index + 1} em tamanho grande`}
+            >
+              {youtubeId ? (
+                <div className="w-full h-full bg-black relative">
+                   <img 
+                      src={`https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`}
+                      alt={`Miniatura vídeo ${index + 1}`}
+                      className="w-full h-full object-cover opacity-80"
+                   />
+                   <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                      <svg className="w-6 h-6 text-white drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                   </div>
+                </div>
+              ) : isVideo(image) ? (
+                <div className="w-full h-full relative">
+                  <video src={image} className="w-full h-full object-cover" muted playsInline />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                </div>
+              ) : (
+                <img src={image} alt={`Miniatura ${index + 1} de ${productTitle}`} className="w-full h-full object-cover" />
+              )}
+            </button>
+          );
+        })}
       </div>
 
       {/* Desktop View: Main image + horizontal thumbnails */}
       <div className="hidden sm:flex flex-col gap-3 h-full">
         {/* Main Image */}
         <div className="relative flex-grow group" aria-label="Galeria de imagens, use as setas para navegar">
-          {isVideo(mainImage) ? (
+          {getYouTubeId(mainImage) ? (
+             <iframe
+               src={`https://www.youtube.com/embed/${getYouTubeId(mainImage)}?autoplay=0&rel=0`}
+               className="w-full h-full bg-black rounded-lg shadow-lg"
+               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+               allowFullScreen
+               title="YouTube video player"
+             />
+          ) : isVideo(mainImage) ? (
             <video
               src={mainImage}
               className="w-full h-full object-contain bg-black rounded-lg shadow-lg cursor-zoom-in"
@@ -119,6 +152,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
               loop
               muted
               playsInline
+              controls
               onClick={() => handleOpenZoom(currentIndex)}
             >
               Seu navegador não suporta vídeos.
@@ -132,12 +166,15 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
             />
           )}
           
-          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-lg pointer-events-none">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-            </svg>
-          </div>
-          {images.length > 1 && (
+          {!isYouTube(mainImage) && (
+             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-lg pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                </svg>
+             </div>
+          )}
+
+          {images.length > 1 && !isYouTube(mainImage) && (
             <>
               <button
                 onClick={handlePrev}
@@ -160,25 +197,38 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
         {/* Thumbnails */}
         <div className="flex-shrink-0 h-20 overflow-x-auto thumbnail-scrollbar">
           <div className="flex space-x-2 pb-2">
-            {images.map((image, index) => (
+            {images.map((image, index) => {
+              const youtubeId = getYouTubeId(image);
+              return (
               <button 
                 key={index} 
                 onClick={() => setCurrentIndex(index)} 
                 className={`w-20 aspect-square flex-shrink-0 rounded-md overflow-hidden border-2 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#A6783F] relative ${currentIndex === index ? 'border-[#A6783F]' : 'border-transparent'}`}
                 aria-label={`Selecionar item ${index + 1}`}
               >
-                {isVideo(image) ? (
-                  <video src={image} className="w-full h-full object-cover" muted playsInline />
+                {youtubeId ? (
+                   <div className="w-full h-full bg-black relative">
+                      <img 
+                        src={`https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`} 
+                        className="w-full h-full object-cover opacity-80" 
+                        alt="YouTube Thumb" 
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                         <svg className="w-5 h-5 text-white drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                      </div>
+                   </div>
+                ) : isVideo(image) ? (
+                  <div className="w-full h-full relative">
+                    <video src={image} className="w-full h-full object-cover" muted playsInline />
+                     <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                      <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                  </div>
                 ) : (
                   <img src={image} alt={`Miniatura ${index + 1} de ${productTitle}`} className="w-full h-full object-cover" />
                 )}
-                 {isVideo(image) && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                  </div>
-                )}
               </button>
-            ))}
+            )})}
           </div>
         </div>
       </div>
@@ -191,7 +241,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
           role="dialog"
           aria-label="Item ampliado"
         >
-          {images.length > 1 && (
+          {images.length > 1 && !isYouTube(images[zoomedImageIndex]) && (
             <>
               {/* Previous Button */}
               <button
@@ -212,7 +262,15 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
             </>
           )}
           
-          {isVideo(images[zoomedImageIndex]) ? (
+          {getYouTubeId(images[zoomedImageIndex]) ? (
+             <iframe 
+               src={`https://www.youtube.com/embed/${getYouTubeId(images[zoomedImageIndex])}?autoplay=1`} 
+               className="w-full max-w-4xl h-[80vh] shadow-2xl rounded-lg"
+               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+               allowFullScreen
+               title="Zoomed Video"
+             />
+          ) : isVideo(images[zoomedImageIndex]) ? (
              <video 
                src={images[zoomedImageIndex]} 
                className="max-w-[90vw] max-h-[90vh] object-contain shadow-2xl rounded-lg"
