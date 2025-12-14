@@ -95,11 +95,11 @@ const categories: ProductCategory[] = [
   },
   {
     title: 'Conjunto P',
-    video: 'https://drive.google.com/uc?export=download&id=1t_sEpJ5dO0awsZCHs_cb-kLL0S3Sp5T5#.mp4',
+    video: 'https://drive.google.com/uc?export=download&id=1ppVNFZtFBJ-gq_wCEj2yYKBgzith4gVS#.mp4',
     description: ['Conjunto P (Verde azulado)', 'R$ 85,00'],
     galleryImages: [
       'https://i.postimg.cc/L8Sdppf2/BASE-ACO-INIXIDAVEL-CORRENTE-BANHADA-OURO-2.jpg',
-      'https://drive.google.com/uc?export=download&id=1t_sEpJ5dO0awsZCHs_cb-kLL0S3Sp5T5#.mp4'
+      'https://drive.google.com/uc?export=download&id=1ppVNFZtFBJ-gq_wCEj2yYKBgzith4gVS#.mp4'
     ],
     technicalDetails: 'Conjunto P (Verde azulado)\n\nDescrição técnica: Corrente veneziana banhada ouro 18k, 5 milésimos.\n\nPreço: R$ 85,00',
     whatsappIdentifier: 'Conjunto P',
