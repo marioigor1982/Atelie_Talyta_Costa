@@ -14,6 +14,13 @@ export const HERO_IMAGES = [
   'https://i.postimg.cc/Y9wf8nGM/Header-4.jpg',
   'https://i.postimg.cc/T2VH8mft/Produto40.jpg',
   'https://i.postimg.cc/tJpM8hD6/SLIDE-8.jpg',
+  'https://i.postimg.cc/kGfQ6TkK/CONJUNTO_GOTA_NEGRA_CORRENTE_BANHADA_OURO_4.jpg',
+  'https://i.postimg.cc/KvBnXrGs/BIJOIA_CONJUNTO_PP_FLOR_NATURAL_HOTENSIA_CORRENTE_BANHADA_OURO_2.jpg',
+  'https://i.postimg.cc/qqkg9n1K/BIJOIA_CONJUNTO_ORQUÍDEA_NATURAL_DESIDRATADA_CORRENTE_BANHADA_OURO_2.jpg',
+  'https://i.postimg.cc/YqXKNggv/BIJOIA_CONJUNTO_FLOR_NATURAL_HOTENSIA_CORRENTE_BANHADA_OURO_2.jpg',
+  'https://i.postimg.cc/RCDjptXB/BIJOIA_COLARES_FLOR_NATURAL_DESIDRATADA_CORRENTE_ESLATANO_11.jpg',
+  'https://i.postimg.cc/3J0zswcy/BIJOIA_COLARES_FLOR_NATURAL_DESIDRATADA_CORRENTE_ESLATANO_6.jpg',
+  'https://i.postimg.cc/L8Sdppf2/BASE_AÇO_INIXIDÁVEL_CORRENTE_BANHADA_OURO_2.jpg',
 ];
 
 export const InstagramIcon: React.FC<{ className?: string }> = ({ className }) => (

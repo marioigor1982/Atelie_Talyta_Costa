@@ -81,7 +81,17 @@ const Footer: React.FC<FooterProps> = ({ refs, onScrollTo }) => {
       </div>
       <div className="mt-12 border-t border-white/20 py-6 text-center text-sm text-gray-300">
         <p>&copy; {new Date().getFullYear()} Ateliê Talyta Costa. Todos os direitos reservados.</p>
-        <p className="mt-1">Desenvolvido com <span role="img" aria-label="heart">❤️</span> por sua equipe</p>
+        <p className="mt-1">
+          Desenvolvido com <span role="img" aria-label="heart">❤️</span> por{' '}
+          <a
+            href="https://www.instagram.com/marioigor_82/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white transition-colors duration-300 font-semibold"
+          >
+            Mario Igor de Jesus
+          </a>
+        </p>
       </div>
     </footer>
   );
