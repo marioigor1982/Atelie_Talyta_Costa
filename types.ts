@@ -2,7 +2,7 @@ import React from 'react';
 
 export interface ProductCategory {
   title: string;
-  video: string;
+  video?: string;
   galleryImages: string[];
   description: string[];
   technicalDetails: string;

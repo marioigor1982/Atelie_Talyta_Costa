@@ -63,6 +63,16 @@ const categories: ProductCategory[] = [
     whatsappIdentifier: 'Biojoia Orquídea',
   },
   {
+    title: 'Biojoia Hortênsia',
+    description: ['Conjunto Flor natural Hortênsia', 'R$ 150,00'],
+    galleryImages: [
+      'https://i.postimg.cc/9Fx5PTT4/BIJOIA-CONJUNTO-FLOR-NATURAL-HOTENSIA-CORRENTE-BANHADA-OURO-1.jpg',
+      'https://i.postimg.cc/YqXKNggv/BIJOIA-CONJUNTO-FLOR-NATURAL-HOTENSIA-CORRENTE-BANHADA-OURO-2.jpg'
+    ],
+    technicalDetails: 'Conjunto Flor natural Hortênsia\n\nDescrição Técnica: Base e corrente veneziana banhada ouro 18k, 5 milésimos.\n\nPreço: R$ 150,00',
+    whatsappIdentifier: 'Biojoia Hortênsia',
+  },
+  {
     title: 'Brinco Médio',
     video: 'https://ik.imagekit.io/marioigor82/Brincos.mp4?updatedAt=1757878780805',
     description: ['Brinco médio base banhada a ouro 18K 5 milésimos', 'A partir de R$ 50,00'],
@@ -284,16 +294,24 @@ const Products: React.FC = () => {
                     isLiked={likedProducts.has(category.title)}
                   />
                 </button>
-                <video
-                  src={category.video}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 md:group-hover:scale-110"
-                >
-                  Seu navegador não suporta vídeos.
-                </video>
+                {category.video ? (
+                  <video
+                    src={category.video}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 md:group-hover:scale-110"
+                  >
+                    Seu navegador não suporta vídeos.
+                  </video>
+                ) : (
+                  <img
+                    src={category.galleryImages[0]}
+                    alt={category.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 md:group-hover:scale-110"
+                  />
+                )}
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10 z-10"></div>
                 
