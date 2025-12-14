@@ -26,6 +26,19 @@ const categories: ProductCategory[] = [
     whatsappIdentifier: 'Conjunto',
   },
   {
+    title: 'Conjunto "Gota Negra"',
+    video: 'https://ik.imagekit.io/marioigor82/CONJUNTO%20GOTA%20NEGRA%20CORRENTE%20BANHADA%20OURO%201.mp4',
+    description: ['Banhado a Ouro 18k', 'R$ 120,00'],
+    galleryImages: [
+      'https://i.postimg.cc/VvDqrK39/CONJUNTO_GOTA_NEGRA_CORRENTE_BANHADA_OURO_3.jpg',
+      'https://i.postimg.cc/kGfQ6TkK/CONJUNTO_GOTA_NEGRA_CORRENTE_BANHADA_OURO_4.jpg',
+      'https://ik.imagekit.io/marioigor82/CONJUNTO%20GOTA%20NEGRA%20CORRENTE%20BANHADA%20OURO%201.mp4',
+      'https://ik.imagekit.io/marioigor82/CONJUNTO%20GOTA%20NEGRA%20CORRENTE%20BANHADA%20OURO%202.mp4'
+    ],
+    technicalDetails: 'Conjunto "Gota Negra"\n\nDescrição técnica: Base e corrente veneziana banhada ouro 18k, 5 milésimos.\n\nPreço: R$ 120,00.\n\nUma peça sofisticada e moderna, ideal para quem busca elegância discreta e marcante.',
+    whatsappIdentifier: 'Conjunto Gota Negra',
+  },
+  {
     title: 'Brinco Médio',
     video: 'https://ik.imagekit.io/marioigor82/Brincos.mp4?updatedAt=1757878780805',
     description: ['Brinco médio base banhada a ouro 18K 5 milésimos', 'A partir de R$ 50,00'],

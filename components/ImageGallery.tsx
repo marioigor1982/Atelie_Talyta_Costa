@@ -15,6 +15,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
 
   const mainImage = images[currentIndex];
 
+  const isVideo = (url: string) => /\.(mp4|webm|ogg)$/i.test(url) || url.includes('.mp4');
+
   if (!images || images.length === 0) {
     return <div className="w-full h-full bg-gray-200 flex items-center justify-center rounded-lg">Sem imagem</div>;
   }
@@ -88,10 +90,19 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
           <button
             key={index}
             onClick={() => handleOpenZoom(index)}
-            className="aspect-square rounded-md overflow-hidden border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#A6783F]"
-            aria-label={`Ver imagem ${index + 1} em tamanho grande`}
+            className="aspect-square rounded-md overflow-hidden border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#A6783F] relative"
+            aria-label={`Ver item ${index + 1} em tamanho grande`}
           >
-            <img src={image} alt={`Miniatura ${index + 1} de ${productTitle}`} className="w-full h-full object-cover" />
+            {isVideo(image) ? (
+              <video src={image} className="w-full h-full object-cover" muted playsInline />
+            ) : (
+              <img src={image} alt={`Miniatura ${index + 1} de ${productTitle}`} className="w-full h-full object-cover" />
+            )}
+            {isVideo(image) && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            )}
           </button>
         ))}
       </div>
@@ -100,12 +111,27 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
       <div className="hidden sm:flex flex-col gap-3 h-full">
         {/* Main Image */}
         <div className="relative flex-grow group" aria-label="Galeria de imagens, use as setas para navegar">
-          <img 
-            src={mainImage} 
-            alt={`Imagem principal de ${productTitle}`} 
-            className="w-full h-full object-cover rounded-lg shadow-lg cursor-zoom-in" 
-            onClick={() => handleOpenZoom(currentIndex)}
-          />
+          {isVideo(mainImage) ? (
+            <video
+              src={mainImage}
+              className="w-full h-full object-contain bg-black rounded-lg shadow-lg cursor-zoom-in"
+              autoPlay
+              loop
+              muted
+              playsInline
+              onClick={() => handleOpenZoom(currentIndex)}
+            >
+              Seu navegador não suporta vídeos.
+            </video>
+          ) : (
+            <img 
+              src={mainImage} 
+              alt={`Imagem principal de ${productTitle}`} 
+              className="w-full h-full object-cover rounded-lg shadow-lg cursor-zoom-in" 
+              onClick={() => handleOpenZoom(currentIndex)}
+            />
+          )}
+          
           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-lg pointer-events-none">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -115,14 +141,14 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
             <>
               <button
                 onClick={handlePrev}
-                aria-label="Imagem anterior"
+                aria-label="Item anterior"
                 className="absolute top-1/2 -translate-y-1/2 left-2 z-10 w-10 h-10 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 hover:bg-black/50 transition-all duration-300"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
               </button>
               <button
                 onClick={handleNext}
-                aria-label="Próxima imagem"
+                aria-label="Próximo item"
                 className="absolute top-1/2 -translate-y-1/2 right-2 z-10 w-10 h-10 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 hover:bg-black/50 transition-all duration-300"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
@@ -138,10 +164,19 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
               <button 
                 key={index} 
                 onClick={() => setCurrentIndex(index)} 
-                className={`w-20 aspect-square flex-shrink-0 rounded-md overflow-hidden border-2 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#A6783F] ${currentIndex === index ? 'border-[#A6783F]' : 'border-transparent'}`}
-                aria-label={`Selecionar imagem ${index + 1}`}
+                className={`w-20 aspect-square flex-shrink-0 rounded-md overflow-hidden border-2 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#A6783F] relative ${currentIndex === index ? 'border-[#A6783F]' : 'border-transparent'}`}
+                aria-label={`Selecionar item ${index + 1}`}
               >
-                <img src={image} alt={`Miniatura ${index + 1} de ${productTitle}`} className="w-full h-full object-cover" />
+                {isVideo(image) ? (
+                  <video src={image} className="w-full h-full object-cover" muted playsInline />
+                ) : (
+                  <img src={image} alt={`Miniatura ${index + 1} de ${productTitle}`} className="w-full h-full object-cover" />
+                )}
+                 {isVideo(image) && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                )}
               </button>
             ))}
           </div>
@@ -154,14 +189,14 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
           className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
           onClick={handleCloseZoom}
           role="dialog"
-          aria-label="Imagem ampliada"
+          aria-label="Item ampliado"
         >
           {images.length > 1 && (
             <>
               {/* Previous Button */}
               <button
                 onClick={handleZoomPrev}
-                aria-label="Imagem anterior"
+                aria-label="Item anterior"
                 className="absolute top-1/2 -translate-y-1/2 left-2 sm:left-4 z-[1000] w-10 h-10 sm:w-12 sm:h-12 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/50 transition-all"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
@@ -169,7 +204,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
               {/* Next Button */}
               <button
                 onClick={handleZoomNext}
-                aria-label="Próxima imagem"
+                aria-label="Próximo item"
                 className="absolute top-1/2 -translate-y-1/2 right-2 sm:right-4 z-[1000] w-10 h-10 sm:w-12 sm:h-12 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/50 transition-all"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
@@ -177,12 +212,23 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, productTitle }) => 
             </>
           )}
           
-          <img 
-            src={images[zoomedImageIndex]} 
-            alt={`Imagem ampliada de ${productTitle}`} 
-            className="max-w-[90vw] max-h-[90vh] object-contain shadow-2xl rounded-lg cursor-default"
-            onClick={(e) => e.stopPropagation()}
-          />
+          {isVideo(images[zoomedImageIndex]) ? (
+             <video 
+               src={images[zoomedImageIndex]} 
+               className="max-w-[90vw] max-h-[90vh] object-contain shadow-2xl rounded-lg"
+               controls
+               autoPlay
+               onClick={(e) => e.stopPropagation()}
+             />
+          ) : (
+            <img 
+              src={images[zoomedImageIndex]} 
+              alt={`Item ampliado de ${productTitle}`} 
+              className="max-w-[90vw] max-h-[90vh] object-contain shadow-2xl rounded-lg cursor-default"
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
+          
           <button 
             onClick={handleCloseZoom} 
             className="absolute top-4 right-4 z-[1000] text-white hover:text-gray-300 transition-colors flex flex-col items-center" 
