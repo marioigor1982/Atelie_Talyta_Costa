@@ -73,6 +73,27 @@ const categories: ProductCategory[] = [
     whatsappIdentifier: 'Biojoia Hortênsia',
   },
   {
+    title: 'Biojoia Colares',
+    video: 'https://ik.imagekit.io/marioigor82/BIJOIA%20COLARES%20FLOR%20NATURAL%20DESIDRATADA%20CORRENTE%20ESLATANO%201.mp4',
+    description: ['Colares com flor natural desidratada', 'A partir de R$ 75,00'],
+    galleryImages: [
+      'https://i.postimg.cc/jdnBpjFH/BIJOIA-COLARES-FLOR-NATURAL-DESIDRATADA-CORRENTE-ESLATANO-2.jpg',
+      'https://i.postimg.cc/9Fws6fny/BIJOIA-COLARES-FLOR-NATURAL-DESIDRATADA-CORRENTE-ESLATANO-3.jpg',
+      'https://ik.imagekit.io/marioigor82/BIJOIA%20COLARES%20FLOR%20NATURAL%20DESIDRATADA%20CORRENTE%20ESLATANO%204.mp4',
+      'https://i.postimg.cc/qM6WP75n/BIJOIA-COLARES-FLOR-NATURAL-DESIDRATADA-CORRENTE-ESLATANO-5.jpg',
+      'https://i.postimg.cc/3J0zswcy/BIJOIA-COLARES-FLOR-NATURAL-DESIDRATADA-CORRENTE-ESLATANO-6.jpg',
+      'https://i.postimg.cc/tCn8KgMR/BIJOIA-COLARES-FLOR-NATURAL-DESIDRATADA-CORRENTE-ESLATANO-7.jpg',
+      'https://i.postimg.cc/fWr6qdBR/BIJOIA-COLARES-FLOR-NATURAL-DESIDRATADA-CORRENTE-ESLATANO-8.jpg',
+      'https://i.postimg.cc/2jKP9WTg/BIJOIA-COLARES-FLOR-NATURAL-DESIDRATADA-CORRENTE-ESLATANO-10.jpg',
+      'https://i.postimg.cc/RCDjptXB/BIJOIA-COLARES-FLOR-NATURAL-DESIDRATADA-CORRENTE-ESLATANO-11.jpg',
+      'https://i.postimg.cc/fWr6qdBn/BIJOIA-COLARES-FLOR-NATURAL-DESIDRATADA-CORRENTE-ESLATANO-12.jpg',
+      'https://i.postimg.cc/RCDjptGj/BIJOIA-COLARES-FLOR-NATURAL-DESIDRATADA-CORRENTE-ESLATANO-13.jpg',
+      'https://ik.imagekit.io/marioigor82/BIJOIA%20COLARES%20FLOR%20NATURAL%20DESIDRATADA%20CORRENTE%20ESLATANO%201.mp4'
+    ],
+    technicalDetails: 'Colares com flor natural desidratada\n\nDescrição Técnica: Colar em corrente elastano.\n\nPreço: A partir de R$ 75,00',
+    whatsappIdentifier: 'Biojoia Colares',
+  },
+  {
     title: 'Brinco Médio',
     video: 'https://ik.imagekit.io/marioigor82/Brincos.mp4?updatedAt=1757878780805',
     description: ['Brinco médio base banhada a ouro 18K 5 milésimos', 'A partir de R$ 50,00'],
